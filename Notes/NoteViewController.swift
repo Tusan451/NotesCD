@@ -11,10 +11,17 @@ class NoteViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        setupView()
     }
     
+    private func setupView() {
+        view.backgroundColor = UIColor(red: 252/255, green: 246/255, blue: 232/255, alpha: 1)
+        setupNavigationBar()
+    }
+    
+    private func setupNavigationBar() {
+        title = "Add Note"
+    }
 
     /*
     // MARK: - Navigation

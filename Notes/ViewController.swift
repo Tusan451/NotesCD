@@ -12,7 +12,7 @@ class ViewController: UITableViewController {
     private let cellID = "cell"
     private var notes: [String] = []
     
-    let addNoteSegue = UIStoryboardSegue(identifier: "addNote", source: ViewController(), destination: NoteViewController())
+    private var addNoteSegue: UIStoryboardSegue!
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
@@ -24,6 +24,7 @@ class ViewController: UITableViewController {
         
         // Table view cell registry
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellID)
+        
     }
     
     private func setupView() {
@@ -51,7 +52,10 @@ class ViewController: UITableViewController {
     }
     
     @objc private func addNewTask() {
-        
+        addNoteSegue = UIStoryboardSegue(identifier: "addNote", source: ViewController(), destination: NoteViewController(), performHandler: {
+            self.show(NoteViewController(), sender: nil)
+        })
+        addNoteSegue.perform()
     }
 }
 
