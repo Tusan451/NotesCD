@@ -7,11 +7,23 @@
 
 import UIKit
 
-class AddNoteViewController: UIViewController {
+class AddNoteViewController: UIViewController, UITextFieldDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
+        
+        let textField = UITextField(frame: CGRect(x: 20, y: 170, width: 350, height: 150))
+        textField.placeholder = "Enter your note here..."
+        textField.font = UIFont.systemFont(ofSize: 15)
+        textField.borderStyle = .none
+        textField.autocorrectionType = .no
+        textField.keyboardType = .default
+        textField.returnKeyType = .done
+        textField.clearButtonMode = .never
+        textField.contentVerticalAlignment = .top
+        textField.delegate = self
+        self.view.addSubview(textField)
     }
     
     private func setupView() {
