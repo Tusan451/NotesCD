@@ -21,12 +21,22 @@ class AddNoteViewController: UIViewController {
     
     private func setupNavigationBar() {
         title = "Add Note"
-        let iconForButton = UIImage(named: "done-50")
-        let iconSize = CGRect(origin: CGPoint.zero, size: CGSize(width: 15, height: 15))
-        let iconButton = UIButton(frame: iconSize)
-        iconButton.setBackgroundImage(iconForButton, for: .normal)
-        iconButton.addTarget(self, action: #selector(saveNote), for: .touchUpInside)
-        let rightBarButtonItem = UIBarButtonItem(customView: iconButton)
+        addRightBarButtonItem()
+    }
+    
+    // Set button to navigation bar
+    private func addRightBarButtonItem() {
+        let menuButton = UIButton(type: .custom)
+        menuButton.frame = CGRect(x: 0.0, y: 0.0, width: 20, height: 20)
+        menuButton.setImage(UIImage(named: "DoneButton"), for: .normal)
+        menuButton.addTarget(self, action: #selector(saveNote), for: .touchUpInside)
+        
+        let rightBarButtonItem = UIBarButtonItem(customView: menuButton)
+        rightBarButtonItem.tintColor = .white
+        let width = rightBarButtonItem.customView?.widthAnchor.constraint(equalToConstant: 24)
+        width?.isActive = true
+        let height = rightBarButtonItem.customView?.heightAnchor.constraint(equalToConstant: 24)
+        height?.isActive = true
         
         navigationItem.rightBarButtonItem = rightBarButtonItem
     }
