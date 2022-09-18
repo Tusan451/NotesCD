@@ -44,16 +44,17 @@ class ViewController: UITableViewController {
         appearence.backgroundColor = UIColor(red: 252/255, green: 119/255, blue: 83/255, alpha: 1)
         navigationController?.navigationBar.standardAppearance = appearence
         navigationController?.navigationBar.scrollEdgeAppearance = navigationController?.navigationBar.standardAppearance
+        navigationController?.navigationBar.tintColor = .white
         
         // Set button to navigation bar
-        let rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addNewTask))
-        navigationItem.rightBarButtonItem = rightBarButtonItem
+        let rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addNewNote))
         rightBarButtonItem.tintColor = .white
+        navigationItem.rightBarButtonItem = rightBarButtonItem
     }
     
-    @objc private func addNewTask() {
-        addNoteSegue = UIStoryboardSegue(identifier: "addNote", source: ViewController(), destination: NoteViewController(), performHandler: {
-            self.show(NoteViewController(), sender: nil)
+    @objc private func addNewNote() {
+        addNoteSegue = UIStoryboardSegue(identifier: "addNote", source: ViewController(), destination: AddNoteViewController(), performHandler: {
+            self.show(AddNoteViewController(), sender: nil)
         })
         addNoteSegue.perform()
     }

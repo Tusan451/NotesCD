@@ -7,7 +7,7 @@
 
 import UIKit
 
-class NoteViewController: UIViewController {
+class AddNoteViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,6 +21,18 @@ class NoteViewController: UIViewController {
     
     private func setupNavigationBar() {
         title = "Add Note"
+        let iconForButton = UIImage(named: "done-50")
+        let iconSize = CGRect(origin: CGPoint.zero, size: CGSize(width: 15, height: 15))
+        let iconButton = UIButton(frame: iconSize)
+        iconButton.setBackgroundImage(iconForButton, for: .normal)
+        iconButton.addTarget(self, action: #selector(saveNote), for: .touchUpInside)
+        let rightBarButtonItem = UIBarButtonItem(customView: iconButton)
+        
+        navigationItem.rightBarButtonItem = rightBarButtonItem
+    }
+    
+    @objc private func saveNote() {
+        
     }
 
     /*
