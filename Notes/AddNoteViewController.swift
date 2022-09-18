@@ -7,24 +7,30 @@
 
 import UIKit
 
-class AddNoteViewController: UIViewController, UITextFieldDelegate {
+class AddNoteViewController: UIViewController, UITextViewDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
         
-        let textField = UITextField(frame: CGRect(x: 20, y: 170, width: 350, height: 150))
-        textField.placeholder = "Enter your note here..."
-        textField.font = UIFont.systemFont(ofSize: 15)
-        textField.borderStyle = .none
-        textField.autocorrectionType = .no
-        textField.keyboardType = .default
-        textField.returnKeyType = .done
-        textField.clearButtonMode = .never
-        textField.contentVerticalAlignment = .top
-        textField.delegate = self
-        self.view.addSubview(textField)
-    }
+        let textView = UITextView(frame: CGRect(x: 20, y: 0, width: UIScreen.main.bounds.size.width - 40, height: 400))
+        
+        textView.translatesAutoresizingMaskIntoConstraints = false
+        
+        textView.isEditable = true
+        textView.text = "Enter your note here..."
+        textView.font = UIFont.systemFont(ofSize: 15)
+        textView.autocorrectionType = .no
+        textView.keyboardType = .default
+        textView.returnKeyType = .done
+        textView.delegate = self
+        self.view.addSubview(textView)
+        
+        textView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
+        textView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20).isActive = true
+        textView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20).isActive = true
+        textView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -40).isActive = true
+        }
     
     private func setupView() {
         view.backgroundColor = UIColor(red: 252/255, green: 246/255, blue: 232/255, alpha: 1)
