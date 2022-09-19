@@ -8,10 +8,13 @@
 import UIKit
 
 class NoteViewController: UIViewController, UITextViewDelegate {
+    
+    var textView = UITextView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
+        addDoneButtonOnKeyboard()
         }
     
     private func setupView() {
@@ -34,17 +37,15 @@ class NoteViewController: UIViewController, UITextViewDelegate {
         
         let rightBarButtonItem = UIBarButtonItem(customView: menuButton)
         rightBarButtonItem.tintColor = .white
-        let width = rightBarButtonItem.customView?.widthAnchor.constraint(equalToConstant: 24)
-        width?.isActive = true
-        let height = rightBarButtonItem.customView?.heightAnchor.constraint(equalToConstant: 24)
-        height?.isActive = true
+        rightBarButtonItem.customView?.widthAnchor.constraint(equalToConstant: 24).isActive = true
+        rightBarButtonItem.customView?.heightAnchor.constraint(equalToConstant: 24).isActive = true
         
         navigationItem.rightBarButtonItem = rightBarButtonItem
     }
     
     // Setup Text View
     private func setupTextView() {
-        let textView = UITextView(frame: CGRect(x: 20, y: 0, width: UIScreen.main.bounds.size.width - 40, height: 400))
+        textView = UITextView(frame: CGRect(x: 20, y: 0, width: UIScreen.main.bounds.size.width - 40, height: 400))
         
         textView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -81,4 +82,35 @@ class NoteViewController: UIViewController, UITextViewDelegate {
     }
     */
 
+}
+
+
+// MARK: - Keyboard hide methods
+
+extension NoteViewController {
+    
+    // Hide keyboard on touck on the screen
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        view.endEditing(true)
+    }
+    
+    // Add Done Button on keyboard
+    func addDoneButtonOnKeyboard() {
+        let doneToolBar = UIToolbar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 50))
+        doneToolBar.barStyle = .default
+
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(doneButtonAction))
+
+        let items = [flexSpace, doneButton]
+        doneToolBar.items = items
+        doneToolBar.sizeToFit()
+
+        textView.inputAccessoryView = doneToolBar
+    }
+    
+    @objc private func doneButtonAction() {
+        textView.resignFirstResponder()
+    }
 }
