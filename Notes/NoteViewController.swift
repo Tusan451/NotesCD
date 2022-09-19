@@ -10,6 +10,7 @@ import UIKit
 class NoteViewController: UIViewController, UITextViewDelegate {
     
     var textView = UITextView()
+    private let placeholder = "Enter your note here..."
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,15 +46,15 @@ class NoteViewController: UIViewController, UITextViewDelegate {
     
     // Setup Text View
     private func setupTextView() {
-        textView = UITextView(frame: CGRect(x: 20, y: 0, width: UIScreen.main.bounds.size.width - 40, height: 400))
+        textView = UITextView(frame: CGRect(x: 20, y: 0, width: UIScreen.main.bounds.size.width - 20, height: 400))
         
         textView.translatesAutoresizingMaskIntoConstraints = false
         
         // Text View default settings
         textView.isEditable = true
-        textView.text = "Enter your note here..."
+        textView.text = placeholder
         textView.textColor = .systemGray
-        textView.font = UIFont.systemFont(ofSize: 15)
+        textView.font = UIFont.systemFont(ofSize: 16)
         textView.backgroundColor = nil
         textView.autocorrectionType = .no
         textView.keyboardType = .default
@@ -85,7 +86,7 @@ class NoteViewController: UIViewController, UITextViewDelegate {
 }
 
 
-// MARK: - Keyboard hide methods
+// MARK: - UITextViewDelegate
 
 extension NoteViewController {
     
@@ -112,5 +113,22 @@ extension NoteViewController {
     
     @objc private func doneButtonAction() {
         textView.resignFirstResponder()
+    }
+    
+    // Clear placeholder text when begin editing
+    func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
+        if textView.text == "" || textView.text == placeholder {
+            textView.text = nil
+            textView.textColor = .black
+        }
+        return true
+    }
+    
+    // Set placeholder text if text is ""
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text == "" {
+            textView.text = placeholder
+            textView.textColor = .systemGray
+        }
     }
 }
