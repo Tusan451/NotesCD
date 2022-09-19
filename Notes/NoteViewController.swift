@@ -7,34 +7,17 @@
 
 import UIKit
 
-class AddNoteViewController: UIViewController, UITextViewDelegate {
+class NoteViewController: UIViewController, UITextViewDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
-        
-        let textView = UITextView(frame: CGRect(x: 20, y: 0, width: UIScreen.main.bounds.size.width - 40, height: 400))
-        
-        textView.translatesAutoresizingMaskIntoConstraints = false
-        
-        textView.isEditable = true
-        textView.text = "Enter your note here..."
-        textView.font = UIFont.systemFont(ofSize: 15)
-        textView.autocorrectionType = .no
-        textView.keyboardType = .default
-        textView.returnKeyType = .done
-        textView.delegate = self
-        self.view.addSubview(textView)
-        
-        textView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
-        textView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20).isActive = true
-        textView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20).isActive = true
-        textView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -40).isActive = true
         }
     
     private func setupView() {
         view.backgroundColor = UIColor(red: 252/255, green: 246/255, blue: 232/255, alpha: 1)
         setupNavigationBar()
+        setupTextView()
     }
     
     private func setupNavigationBar() {
@@ -57,6 +40,31 @@ class AddNoteViewController: UIViewController, UITextViewDelegate {
         height?.isActive = true
         
         navigationItem.rightBarButtonItem = rightBarButtonItem
+    }
+    
+    // Setup Text View
+    private func setupTextView() {
+        let textView = UITextView(frame: CGRect(x: 20, y: 0, width: UIScreen.main.bounds.size.width - 40, height: 400))
+        
+        textView.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Text View default settings
+        textView.isEditable = true
+        textView.text = "Enter your note here..."
+        textView.textColor = .systemGray
+        textView.font = UIFont.systemFont(ofSize: 15)
+        textView.backgroundColor = nil
+        textView.autocorrectionType = .no
+        textView.keyboardType = .default
+        textView.returnKeyType = .default
+        textView.delegate = self
+        self.view.addSubview(textView)
+        
+        // Text View constraints
+        textView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
+        textView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20).isActive = true
+        textView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20).isActive = true
+        textView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -40).isActive = true
     }
     
     @objc private func saveNote() {

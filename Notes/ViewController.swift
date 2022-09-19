@@ -53,8 +53,8 @@ class ViewController: UITableViewController {
     }
     
     @objc private func addNewNote() {
-        addNoteSegue = UIStoryboardSegue(identifier: "addNote", source: ViewController(), destination: AddNoteViewController(), performHandler: {
-            self.show(AddNoteViewController(), sender: nil)
+        addNoteSegue = UIStoryboardSegue(identifier: "addNote", source: ViewController(), destination: NoteViewController(), performHandler: {
+            self.show(NoteViewController(), sender: nil)
         })
         addNoteSegue.perform()
     }
