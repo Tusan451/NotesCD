@@ -6,11 +6,12 @@
 //
 
 import UIKit
+import CoreData
 
 class ViewController: UITableViewController {
     
     private let cellID = "cell"
-    var notes: [String] = []
+    private var notes: [Note] = []
     
     private var addNoteSegue: UIStoryboardSegue!
     
@@ -65,8 +66,6 @@ class ViewController: UITableViewController {
     }
     
     func loadData() {
-        guard let savedData = UserDefaults.standard.value(forKey: "Basic note") as? String else { return }
-        notes.append(savedData)
         tableView.reloadData()
     }
 }
@@ -83,9 +82,14 @@ extension ViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath)
         
         let note = notes[indexPath.row]
-        cell.textLabel?.text = note
+        cell.textLabel?.text = note.name
         cell.backgroundColor = UIColor(red: 252/255, green: 246/255, blue: 232/255, alpha: 1)
+        cell.textLabel?.font = UIFont.systemFont(ofSize: 16)
         
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 50
     }
 }

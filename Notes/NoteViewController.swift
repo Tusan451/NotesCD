@@ -6,11 +6,13 @@
 //
 
 import UIKit
+import CoreData
 
 class NoteViewController: UIViewController, UITextViewDelegate {
     
     var textView = UITextView()
     private let placeholder = "Enter your note here..."
+    private let appDelegate = UIApplication.shared.delegate as! AppDelegate
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,10 +48,21 @@ class NoteViewController: UIViewController, UITextViewDelegate {
     
     @objc private func saveNoteButtonAction() {
         if textView.text != "" && textView.text != placeholder {
-            UserDefaults.standard.set(textView.text, forKey: "Basic note")
+            saveData(with: textView.text)
             self.navigationController?.popViewController(animated: true)
-        } else {
-            return
+        }
+    }
+    
+    private func saveData(with noteName: String) {
+        let managedContext = appDelegate.persistentContainer.viewContext
+        guard let entityDescription = NSEntityDescription.entity(forEntityName: "Note", in: managedContext) else { return }
+        let note = NSManagedObject(entity: entityDescription, insertInto: managedContext) as! Note
+        note.name = noteName
+        
+        do {
+            try managedContext.save()
+        } catch let error {
+            print(error.localizedDescription)
         }
     }
     
