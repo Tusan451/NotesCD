@@ -34,7 +34,7 @@ class NoteViewController: UIViewController, UITextViewDelegate {
         let menuButton = UIButton(type: .custom)
         menuButton.frame = CGRect(x: 0.0, y: 0.0, width: 20, height: 20)
         menuButton.setImage(UIImage(named: "DoneButton"), for: .normal)
-        menuButton.addTarget(self, action: #selector(saveNote), for: .touchUpInside)
+        menuButton.addTarget(self, action: #selector(saveNoteButtonAction), for: .touchUpInside)
         
         let rightBarButtonItem = UIBarButtonItem(customView: menuButton)
         rightBarButtonItem.tintColor = .white
@@ -42,6 +42,15 @@ class NoteViewController: UIViewController, UITextViewDelegate {
         rightBarButtonItem.customView?.heightAnchor.constraint(equalToConstant: 24).isActive = true
         
         navigationItem.rightBarButtonItem = rightBarButtonItem
+    }
+    
+    @objc private func saveNoteButtonAction() {
+        if textView.text != "" && textView.text != placeholder {
+            UserDefaults.standard.set(textView.text, forKey: "Basic note")
+            self.navigationController?.popViewController(animated: true)
+        } else {
+            return
+        }
     }
     
     // Setup Text View
@@ -67,10 +76,6 @@ class NoteViewController: UIViewController, UITextViewDelegate {
         textView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20).isActive = true
         textView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20).isActive = true
         textView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -40).isActive = true
-    }
-    
-    @objc private func saveNote() {
-        
     }
 
     /*

@@ -10,7 +10,7 @@ import UIKit
 class ViewController: UITableViewController {
     
     private let cellID = "cell"
-    private var notes: [String] = []
+    var notes: [String] = []
     
     private var addNoteSegue: UIStoryboardSegue!
     
@@ -25,6 +25,11 @@ class ViewController: UITableViewController {
         // Table view cell registry
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellID)
         
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        loadData()
     }
     
     private func setupView() {
@@ -58,6 +63,12 @@ class ViewController: UITableViewController {
         })
         addNoteSegue.perform()
     }
+    
+    func loadData() {
+        guard let savedData = UserDefaults.standard.value(forKey: "Basic note") as? String else { return }
+        notes.append(savedData)
+        tableView.reloadData()
+    }
 }
 
 // MARK: - UITableViewDataSource
@@ -73,6 +84,7 @@ extension ViewController {
         
         let note = notes[indexPath.row]
         cell.textLabel?.text = note
+        cell.backgroundColor = UIColor(red: 252/255, green: 246/255, blue: 232/255, alpha: 1)
         
         return cell
     }
