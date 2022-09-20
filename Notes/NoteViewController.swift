@@ -12,7 +12,7 @@ class NoteViewController: UIViewController, UITextViewDelegate {
     
     var textView = UITextView()
     private let placeholder = "Enter your note here..."
-    private let appDelegate = UIApplication.shared.delegate as! AppDelegate
+    private let managedContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,7 +54,6 @@ class NoteViewController: UIViewController, UITextViewDelegate {
     }
     
     private func saveData(with noteName: String) {
-        let managedContext = appDelegate.persistentContainer.viewContext
         guard let entityDescription = NSEntityDescription.entity(forEntityName: "Note", in: managedContext) else { return }
         let note = NSManagedObject(entity: entityDescription, insertInto: managedContext) as! Note
         note.name = noteName

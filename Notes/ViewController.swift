@@ -15,6 +15,8 @@ class ViewController: UITableViewController {
     
     private var addNoteSegue: UIStoryboardSegue!
     
+    private let managedContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
@@ -30,7 +32,7 @@ class ViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        loadData()
+        fetchData()
     }
     
     private func setupView() {
@@ -65,7 +67,15 @@ class ViewController: UITableViewController {
         addNoteSegue.perform()
     }
     
-    func loadData() {
+    // Fetch Data from Core Data
+    func fetchData() {
+        let fetchRequest: NSFetchRequest<Note> = Note.fetchRequest()
+        
+        do {
+            notes = try managedContext.fetch(fetchRequest)
+        } catch let error {
+            print(error.localizedDescription)
+        }
         tableView.reloadData()
     }
 }
