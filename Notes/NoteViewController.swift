@@ -17,6 +17,7 @@ class NoteViewController: UIViewController, UITextViewDelegate {
 //    var note: Note!
     
     private let noteName: String?
+    private var updatedName: String?
     
     init(noteName: String?) {
         self.noteName = noteName
@@ -60,8 +61,20 @@ class NoteViewController: UIViewController, UITextViewDelegate {
     }
     
     @objc private func saveNoteButtonAction() {
-        if textView.text != "" && textView.text != placeholder {
-            saveData(with: textView.text)
+//        if textView.text != "" && textView.text != placeholder {
+//            guard let updatedName = updatedName else {return }
+//            saveData(with: updatedName)
+//            self.navigationController?.popViewController(animated: true)
+//        }
+        
+        if noteName == nil {
+            guard let updatedName = updatedName else { return }
+            saveData(with: updatedName)
+            self.navigationController?.popViewController(animated: true)
+        } else {
+            guard let noteName = noteName else { return }
+            guard let updatedName = updatedName else { return }
+            updateData(with: noteName, for: updatedName)
             self.navigationController?.popViewController(animated: true)
         }
     }
@@ -75,6 +88,18 @@ class NoteViewController: UIViewController, UITextViewDelegate {
             try managedContext.save()
         } catch let error {
             print(error.localizedDescription)
+        }
+    }
+    
+    private func updateData(with noteName: String, for newName: String) {
+        let fetchRequest = NSFetchRequest<Note>(entityName: "Note")
+        fetchRequest.predicate = NSPredicate(format: "name = %@", noteName)
+        
+        if let notes = try? managedContext.fetch(fetchRequest), !notes.isEmpty {
+            let note = notes.first!
+            note.name = newName
+            
+            try? managedContext.save()
         }
     }
     
@@ -165,6 +190,8 @@ extension NoteViewController {
         if textView.text == "" {
             textView.text = placeholder
             textView.textColor = .systemGray
+        } else {
+            updatedName = textView.text
         }
     }
 }
