@@ -13,7 +13,20 @@ class NoteViewController: UIViewController, UITextViewDelegate {
     var textView = UITextView()
     private let placeholder = "Enter your note here..."
     private let managedContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-
+    
+//    var note: Note!
+    
+    private let noteName: String?
+    
+    init(noteName: String?) {
+        self.noteName = noteName
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
@@ -52,7 +65,7 @@ class NoteViewController: UIViewController, UITextViewDelegate {
             self.navigationController?.popViewController(animated: true)
         }
     }
-    
+
     private func saveData(with noteName: String) {
         guard let entityDescription = NSEntityDescription.entity(forEntityName: "Note", in: managedContext) else { return }
         let note = NSManagedObject(entity: entityDescription, insertInto: managedContext) as! Note
@@ -73,8 +86,14 @@ class NoteViewController: UIViewController, UITextViewDelegate {
         
         // Text View default settings
         textView.isEditable = true
-        textView.text = placeholder
-        textView.textColor = .systemGray
+        if noteName != nil {
+            textView.text = noteName
+            textView.textColor = .black
+        } else {
+            textView.text = placeholder
+            textView.textColor = .systemGray
+        }
+//        textView.textColor = .systemGray
         textView.font = UIFont.systemFont(ofSize: 16)
         textView.backgroundColor = nil
         textView.autocorrectionType = .no

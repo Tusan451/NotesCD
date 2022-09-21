@@ -14,6 +14,7 @@ class ViewController: UITableViewController {
     private var notes: [Note] = []
     
     private var addNoteSegue: UIStoryboardSegue!
+    private var cellSegue: UIStoryboardSegue!
     
     private let managedContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
@@ -27,7 +28,6 @@ class ViewController: UITableViewController {
         
         // Table view cell registry
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellID)
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -61,8 +61,8 @@ class ViewController: UITableViewController {
     }
     
     @objc private func addNewNote() {
-        addNoteSegue = UIStoryboardSegue(identifier: "addNote", source: ViewController(), destination: NoteViewController(), performHandler: {
-            self.show(NoteViewController(), sender: nil)
+        addNoteSegue = UIStoryboardSegue(identifier: "addNote", source: ViewController(), destination: NoteViewController(noteName: nil), performHandler: {
+            self.show(NoteViewController(noteName: nil), sender: nil)
         })
         addNoteSegue.perform()
     }
@@ -78,6 +78,14 @@ class ViewController: UITableViewController {
         }
         tableView.reloadData()
     }
+    
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        guard segue.identifier == "cellEdit" else { return }
+//        let vc2 = self.cellSegue.destination as! NoteViewController
+//        let indexPath = sender as! IndexPath
+//        vc2.note = self.notes[indexPath.row]
+//        self.show(NoteViewController(), sender: self)
+//    }
 }
 
 // MARK: - UITableViewDataSource
@@ -97,6 +105,23 @@ extension ViewController {
         cell.textLabel?.font = UIFont.systemFont(ofSize: 16)
         
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+//        cellSegue = UIStoryboardSegue(identifier: "cellEdit", source: ViewController(), destination: NoteViewController(), performHandler: {
+//            let vc2 = self.cellSegue.destination as! NoteViewController
+//            vc2.note = self.notes[indexPath.row]
+//            self.show(NoteViewController(), sender: indexPath)
+//        })
+//        cellSegue.perform()
+        
+        let note = notes[indexPath.row]
+        guard let name = note.name else { return }
+        
+        let vc2 = NoteViewController(noteName: name)
+        navigationController?.pushViewController(vc2, animated: true)
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
