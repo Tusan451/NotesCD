@@ -68,7 +68,7 @@ class ViewController: UITableViewController {
     }
     
     // Fetch Data from Core Data
-    func fetchData() {
+    private func fetchData() {
         let fetchRequest: NSFetchRequest<Note> = Note.fetchRequest()
         
         do {
@@ -79,13 +79,18 @@ class ViewController: UITableViewController {
         tableView.reloadData()
     }
     
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        guard segue.identifier == "cellEdit" else { return }
-//        let vc2 = self.cellSegue.destination as! NoteViewController
-//        let indexPath = sender as! IndexPath
-//        vc2.note = self.notes[indexPath.row]
-//        self.show(NoteViewController(), sender: self)
-//    }
+    // Delete Note frome Core Data Stack
+    private func removeData(with noteName: String) {
+        let fetchRequest = NSFetchRequest<Note>(entityName: "Note")
+        fetchRequest.predicate = NSPredicate(format: "name = %@", noteName)
+        
+        if let notes = try? managedContext.fetch(fetchRequest), !notes.isEmpty {
+            let note = notes.first!
+            managedContext.delete(note)
+            
+            try? managedContext.save()
+        }
+    }
 }
 
 // MARK: - UITableViewDataSource
@@ -110,13 +115,6 @@ extension ViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-//        cellSegue = UIStoryboardSegue(identifier: "cellEdit", source: ViewController(), destination: NoteViewController(), performHandler: {
-//            let vc2 = self.cellSegue.destination as! NoteViewController
-//            vc2.note = self.notes[indexPath.row]
-//            self.show(NoteViewController(), sender: indexPath)
-//        })
-//        cellSegue.perform()
-        
         let note = notes[indexPath.row]
         guard let name = note.name else { return }
         
@@ -126,5 +124,19 @@ extension ViewController {
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 50
+    }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        
+        // Add Delete Action
+        guard editingStyle == .delete else { return }
+        
+        // Delete Note from Core Data
+        let note = notes[indexPath.row]
+        notes.remove(at: indexPath.row)
+        tableView.deleteRows(at: [indexPath], with: .automatic)
+        
+        guard let noteName = note.name else { return }
+        removeData(with: noteName)
     }
 }

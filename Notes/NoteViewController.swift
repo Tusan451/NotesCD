@@ -14,8 +14,6 @@ class NoteViewController: UIViewController, UITextViewDelegate {
     private let placeholder = "Enter your note here..."
     private let managedContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
-//    var note: Note!
-    
     private let noteName: String?
     private var updatedName: String?
     
@@ -61,11 +59,6 @@ class NoteViewController: UIViewController, UITextViewDelegate {
     }
     
     @objc private func saveNoteButtonAction() {
-//        if textView.text != "" && textView.text != placeholder {
-//            guard let updatedName = updatedName else {return }
-//            saveData(with: updatedName)
-//            self.navigationController?.popViewController(animated: true)
-//        }
         
         if noteName == nil {
             guard let updatedName = updatedName else { return }
@@ -133,17 +126,6 @@ class NoteViewController: UIViewController, UITextViewDelegate {
         textView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20).isActive = true
         textView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -40).isActive = true
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
 
 
