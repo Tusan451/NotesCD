@@ -39,7 +39,11 @@ class NoteViewController: UIViewController, UITextViewDelegate {
     }
     
     private func setupNavigationBar() {
-        title = "Add Note"
+        if noteName == nil {
+            title = "Add Note"
+        } else {
+            title = "Edit Note"
+        }
         addRightBarButtonItem()
     }
     
